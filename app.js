@@ -170,7 +170,7 @@ function showInfo() {
       if (staff) {
         let createElement = `<tr class = "employeeDetails">
                 <td>${i + 1}</td>
-                <td><img src="/img/pic1.png" alt="" width="40" height="40"></td>
+                <td><img src="img/pic1.png" alt="" width="40" height="40"></td>
                 <td>${staff.fName + " " + staff.lName}</td>
                 <td>${staff.ageVal}</td>
                 <td>${staff.cityVal}</td>
