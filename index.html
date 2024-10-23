@@ -24,7 +24,7 @@
                 <div class="entries">
                     Show <select name="" id="table_size">
                         <option value="5">5</option>
-                        <option value="10">10</option>
+                        <option value="10" selected="selected">10</option>
                         <option value="20">20</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
@@ -48,18 +48,19 @@
 
             <thead>
                 <tr class="heading">
+                    <!-- <th onclick="sortTable('index')">SL No</th> -->
                     <th>SL No</th>
                     <th>Picture</th>
-                    <th>Full Name</th>
-                    <th>Age</th>
-                    <th>City</th>
-                    <th>Position</th>
-                    <th>Salary</th>
-                    <th>Start Date</th>
-                    <th>Email</th>
-                    <th>Phone</th>
+                    <th onclick="sortTable('fullName')">Full Name <span id="fullNameIcon"></span></th>
+                    <th onclick="sortTable('age')">Age <span id="ageIcon"></span></th>
+                    <th onclick="sortTable('city')">City <span id="cityIcon"></span></th>
+                    <th onclick="sortTable('position')">Position <span id="positionIcon"></span></th>
+                    <th onclick="sortTable('salary')">Salary <span id="salaryIcon"></span></th>
+                    <th onclick="sortTable('sDate')">Start Date <span id="sDateIcon"></span></th>
+                    <th onclick="sortTable('email')">Email <span id="emailIcon"></span></th>
+                    <th onclick="sortTable('phone')">Phone <span id="phoneIcon"></span></th>
                     <th>Action</th>
-                </tr>
+                  </tr>                  
             </thead>
 
 
