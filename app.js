@@ -367,7 +367,7 @@ form.addEventListener("submit", async (e) => {
       // originalData.unshift(newUser);
 
       fetchDataFromAPI();
-      updateSortIcons("")
+      updateSortIcons("");
     } else {
       // console.log("editttttt",information);
 
@@ -383,7 +383,7 @@ form.addEventListener("submit", async (e) => {
       );
       const updatedUser = await response.json();
       fetchDataFromAPI();
-      updateSortIcons("")
+      updateSortIcons("");
       // originalData[editId] = updatedUser;
       // window.location.reload();
     }
@@ -505,90 +505,101 @@ filterData.addEventListener("input", () => {
 
 displayIndexBtn();
 
-let sortDirection = true; // True for ascending, false for descending
+let sortDirection = null; // null for default, true for ascending, false for descending
 let currentSortedColumn = ""; // Keep track of the currently sorted column
 
 function updateSortIcons(column) {
-  // Remove existing icons
+  // Reset all icons to show both arrows (default state)
   document.querySelectorAll("th span").forEach((span) => {
-    span.innerHTML = ""; // Clear existing icons
+    span.innerHTML = "&#9650;&#9660;"; // Show both up (▲) and down (▼) arrows
   });
 
-  if (column === "") {
-    // Reset to show both up and down arrows
-    document.querySelectorAll("th span").forEach((span) => {
-      span.innerHTML = "&#9650;&#9660;"; // Show both up (▲) and down (▼) arrows
-    });
-  } else {
-    // Add an up or down arrow based on the sort direction
-    const icon = sortDirection ? "&#9650;" : "&#9660;"; // Up arrow for ascending, down arrow for descending
+  if (column !== "" && sortDirection !== null) {
+    const icon = sortDirection ? "&#9650;" : "&#9660;"; // Up for ascending, down for descending
     const iconElement = document.getElementById(`${column}Icon`);
-    iconElement.innerHTML = icon; // Update the specific column's icon
+    iconElement.innerHTML = icon; // Show the appropriate icon for the sorted column
   }
 }
 
 function sortTable(column) {
-  // Sort logic
-  if (column === "fullName") {
-    getData.sort((a, b) => {
-      const fullNameA = (a.fName + " " + a.lName).toLowerCase();
-      const fullNameB = (b.fName + " " + b.lName).toLowerCase();
-      return sortDirection
-        ? fullNameA.localeCompare(fullNameB)
-        : fullNameB.localeCompare(fullNameA);
-    });
-  } else if (column === "age") {
-    getData.sort((a, b) =>
-      sortDirection ? a.ageVal - b.ageVal : b.ageVal - a.ageVal
-    );
-  } else if (column === "city") {
-    getData.sort((a, b) => {
-      const cityA = a.cityVal.toLowerCase();
-      const cityB = b.cityVal.toLowerCase();
-      return sortDirection
-        ? cityA.localeCompare(cityB)
-        : cityB.localeCompare(cityA);
-    });
-  } else if (column === "position") {
-    getData.sort((a, b) => {
-      const positionA = a.positionVal.toLowerCase();
-      const positionB = b.positionVal.toLowerCase();
-      return sortDirection
-        ? positionA.localeCompare(positionB)
-        : positionB.localeCompare(positionA);
-    });
-  } else if (column === "salary") {
-    getData.sort((a, b) =>
-      sortDirection ? a.salaryVal - b.salaryVal : b.salaryVal - a.salaryVal
-    );
-  } else if (column === "sDate") {
-    getData.sort((a, b) => {
-      const dateA = new Date(a.sDateVal);
-      const dateB = new Date(b.sDateVal);
-      return sortDirection ? dateA - dateB : dateB - dateA;
-    });
-  } else if (column === "email") {
-    getData.sort((a, b) => {
-      const emailA = a.emailVal.toLowerCase();
-      const emailB = b.emailVal.toLowerCase();
-      return sortDirection
-        ? emailA.localeCompare(emailB)
-        : emailB.localeCompare(emailA);
-    });
-  } else if (column === "phone") {
-    getData.sort((a, b) => {
-      const phoneA = a.phoneVal.toLowerCase();
-      const phoneB = b.phoneVal.toLowerCase();
-      return sortDirection
-        ? phoneA.localeCompare(phoneB)
-        : phoneB.localeCompare(phoneA);
-    });
+  if (column !== currentSortedColumn) {
+    // Reset to ascending if sorting a new column
+    sortDirection = true;
+  } else {
+    // Toggle between ascending, descending, and default (3 states)
+    if (sortDirection === true) {
+      sortDirection = false; // Switch to descending
+    } else if (sortDirection === false) {
+      sortDirection = null; // Switch to default (no sort)
+    } else {
+      sortDirection = true; // Switch back to ascending
+    }
+  }
+  
+  // If default state (null), reset to original unsorted data
+  if (sortDirection === null) {
+    getData = [...originalData]; // Reset to original data
+  } else {
+    // Sorting logic
+    if (column === "fullName") {
+      getData.sort((a, b) => {
+        const fullNameA = (a.fName + " " + a.lName).toLowerCase();
+        const fullNameB = (b.fName + " " + b.lName).toLowerCase();
+        return sortDirection
+          ? fullNameA.localeCompare(fullNameB)
+          : fullNameB.localeCompare(fullNameA);
+      });
+    } else if (column === "age") {
+      getData.sort((a, b) =>
+        sortDirection ? a.ageVal - b.ageVal : b.ageVal - a.ageVal
+      );
+    } else if (column === "city") {
+      getData.sort((a, b) => {
+        const cityA = a.cityVal.toLowerCase();
+        const cityB = b.cityVal.toLowerCase();
+        return sortDirection
+          ? cityA.localeCompare(cityB)
+          : cityB.localeCompare(cityA);
+      });
+    } else if (column === "position") {
+      getData.sort((a, b) => {
+        const positionA = a.positionVal.toLowerCase();
+        const positionB = b.positionVal.toLowerCase();
+        return sortDirection
+          ? positionA.localeCompare(positionB)
+          : positionB.localeCompare(positionA);
+      });
+    } else if (column === "salary") {
+      getData.sort((a, b) =>
+        sortDirection ? a.salaryVal - b.salaryVal : b.salaryVal - a.salaryVal
+      );
+    } else if (column === "sDate") {
+      getData.sort((a, b) => {
+        const dateA = new Date(a.sDateVal);
+        const dateB = new Date(b.sDateVal);
+        return sortDirection ? dateA - dateB : dateB - dateA;
+      });
+    } else if (column === "email") {
+      getData.sort((a, b) => {
+        const emailA = a.emailVal.toLowerCase();
+        const emailB = b.emailVal.toLowerCase();
+        return sortDirection
+          ? emailA.localeCompare(emailB)
+          : emailB.localeCompare(emailA);
+      });
+    } else if (column === "phone") {
+      getData.sort((a, b) => {
+        const phoneA = a.phoneVal.toLowerCase();
+        const phoneB = b.phoneVal.toLowerCase();
+        return sortDirection
+          ? phoneA.localeCompare(phoneB)
+          : phoneB.localeCompare(phoneA);
+      });
+    }
   }
 
-  // Toggle sort direction for the next click
-  sortDirection = !sortDirection;
-
   // Update the icon next to the column
+  currentSortedColumn = column; // Set the current sorted column
   updateSortIcons(column);
 
   // Update the displayed data
@@ -596,3 +607,4 @@ function sortTable(column) {
   showInfo();
   highlightIndexBtn();
 }
+

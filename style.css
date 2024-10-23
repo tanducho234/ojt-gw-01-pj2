@@ -181,7 +181,7 @@ th:nth-child(6) { width: 150px; }  /* Position */
 th:nth-child(7) { width: 150px; }  /* Salary */
 th:nth-child(8) { width: 200px; }  /* Start Date */
 th:nth-child(9) { width: 200px; }  /* Email */
-th:nth-child(10) { width: 150px; } /* Phone */
+th:nth-child(10) { width: 150px; } /* Phone */  
 th:nth-child(11) { width: 300px; } /* Action */
 th{
     font-size: 12px;
