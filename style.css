@@ -122,7 +122,7 @@ table .heading th:hover{
 table tr th, table tr td{
     padding:3px 15px;
     color: var(--dark8);
-    vertical-align: middle;
+    vertical-align: middle
 }
 
 table tr th{
@@ -173,6 +173,19 @@ table td button{
     outline: none;
     border: 1px solid var(--dark7);
 }
+th:nth-child(1) { width: 50px; }   
+th:nth-child(2) { width: 100px; }   
+th:nth-child(3) { width: 200px; }   
+th:nth-child(4) { width: 150px; }   /* Age */
+th:nth-child(5) { width: 200px; }  /* City */
+th:nth-child(6) { width: 200px; }  /* Position */
+th:nth-child(7) { width: 200px; }  /* Salary */
+th:nth-child(8) { width: 200px; }  /* Start Date */
+th:nth-child(9) { width: 300px; }  /* Email */
+th:nth-child(10) { width: 150px; } /* Phone */
+th:nth-child(11) { width: 200px; } /* Action */
+
+
 
 .container footer{
     margin-top: 25px;

@@ -37,6 +37,8 @@ const fetchDataFromAPI = async () => {
       "https://67175f68b910c6a6e027c4a7.mockapi.io/api/v1/users"
     );
     originalData = await response.json();
+    // Sort the data by createdAt in descending order
+    originalData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     getData = [...originalData];
     displayIndexBtn();
     highlightIndexBtn();
@@ -344,6 +346,7 @@ form.addEventListener("submit", async (e) => {
     sDateVal: sDate.value,
     emailVal: email.value,
     phoneVal: phone.value,
+    createdAt: new Date().toISOString()
   };
 
   try {
@@ -488,7 +491,7 @@ filterData.addEventListener("input", () => {
     // Update the current data with filtered data
     getData = filteredData;
   } else {
-    getData = JSON.parse(localStorage.getItem("userProfile")) || [];
+    getData = originalData
   }
 
   currentIndex = 1;
@@ -516,9 +519,7 @@ function updateSortIcons(column) {
 
 function sortTable(column) {
   // Sort logic
-  if (column === 'index') {
-    getData.sort((a, b) => (sortDirection ? a.id - b.id : b.id - a.id));
-  } else if (column === 'fullName') {
+if (column === 'fullName') {
     getData.sort((a, b) => {
       const fullNameA = (a.fName + " " + a.lName).toLowerCase();
       const fullNameB = (b.fName + " " + b.lName).toLowerCase();
