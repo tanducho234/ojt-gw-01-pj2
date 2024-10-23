@@ -168,7 +168,7 @@ function showInfo() {
     for (var i = tab_start; i < tab_end; i++) {
       var staff = getData[i];
 
-    //   <td><img src="${staff.picture}" alt="" width="40" height="40"></td>
+      //   <td><img src="${staff.picture}" alt="" width="40" height="40"></td>
       if (staff) {
         let createElement = `<tr class = "employeeDetails">
                 <td>${i + 1}</td>
@@ -201,7 +201,9 @@ function showInfo() {
         }')"><i class="fa-regular fa-pen-to-square"></i></button>
 
 
-                    <button onclick = "deleteInfo(${staff.id})"><i class="fa-regular fa-trash-can"></i></button>
+                    <button onclick = "deleteInfo(${
+                      staff.id
+                    })"><i class="fa-regular fa-trash-can"></i></button>
                 </td>
             </tr>`;
 
@@ -346,7 +348,7 @@ form.addEventListener("submit", async (e) => {
     sDateVal: sDate.value,
     emailVal: email.value,
     phoneVal: phone.value,
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
   };
 
   try {
@@ -363,8 +365,9 @@ form.addEventListener("submit", async (e) => {
       );
       const newUser = await response.json();
       // originalData.unshift(newUser);
-      fetchDataFromAPI();
 
+      fetchDataFromAPI();
+      updateSortIcons("")
     } else {
       // console.log("editttttt",information);
 
@@ -380,6 +383,7 @@ form.addEventListener("submit", async (e) => {
       );
       const updatedUser = await response.json();
       fetchDataFromAPI();
+      updateSortIcons("")
       // originalData[editId] = updatedUser;
       // window.location.reload();
     }
@@ -491,7 +495,7 @@ filterData.addEventListener("input", () => {
     // Update the current data with filtered data
     getData = filteredData;
   } else {
-    getData = originalData
+    getData = originalData;
   }
 
   currentIndex = 1;
@@ -501,25 +505,31 @@ filterData.addEventListener("input", () => {
 
 displayIndexBtn();
 
-
 let sortDirection = true; // True for ascending, false for descending
 let currentSortedColumn = ""; // Keep track of the currently sorted column
 
 function updateSortIcons(column) {
   // Remove existing icons
   document.querySelectorAll("th span").forEach((span) => {
-    span.innerHTML = "";
+    span.innerHTML = ""; // Clear existing icons
   });
 
-  // Add an up or down arrow based on the sort direction
-  const icon = sortDirection ? "&#9650;" : "&#9660;"; // Up arrow for ascending, down arrow for descending
-  const iconElement = document.getElementById(`${column}Icon`);
-  iconElement.innerHTML = icon;
+  if (column === "") {
+    // Reset to show both up and down arrows
+    document.querySelectorAll("th span").forEach((span) => {
+      span.innerHTML = "&#9650;&#9660;"; // Show both up (▲) and down (▼) arrows
+    });
+  } else {
+    // Add an up or down arrow based on the sort direction
+    const icon = sortDirection ? "&#9650;" : "&#9660;"; // Up arrow for ascending, down arrow for descending
+    const iconElement = document.getElementById(`${column}Icon`);
+    iconElement.innerHTML = icon; // Update the specific column's icon
+  }
 }
 
 function sortTable(column) {
   // Sort logic
-if (column === 'fullName') {
+  if (column === "fullName") {
     getData.sort((a, b) => {
       const fullNameA = (a.fName + " " + a.lName).toLowerCase();
       const fullNameB = (b.fName + " " + b.lName).toLowerCase();
@@ -527,15 +537,19 @@ if (column === 'fullName') {
         ? fullNameA.localeCompare(fullNameB)
         : fullNameB.localeCompare(fullNameA);
     });
-  } else if (column === 'age') {
-    getData.sort((a, b) => (sortDirection ? a.ageVal - b.ageVal : b.ageVal - a.ageVal));
-  } else if (column === 'city') {
+  } else if (column === "age") {
+    getData.sort((a, b) =>
+      sortDirection ? a.ageVal - b.ageVal : b.ageVal - a.ageVal
+    );
+  } else if (column === "city") {
     getData.sort((a, b) => {
       const cityA = a.cityVal.toLowerCase();
       const cityB = b.cityVal.toLowerCase();
-      return sortDirection ? cityA.localeCompare(cityB) : cityB.localeCompare(cityA);
+      return sortDirection
+        ? cityA.localeCompare(cityB)
+        : cityB.localeCompare(cityA);
     });
-  } else if (column === 'position') {
+  } else if (column === "position") {
     getData.sort((a, b) => {
       const positionA = a.positionVal.toLowerCase();
       const positionB = b.positionVal.toLowerCase();
@@ -543,15 +557,17 @@ if (column === 'fullName') {
         ? positionA.localeCompare(positionB)
         : positionB.localeCompare(positionA);
     });
-  } else if (column === 'salary') {
-    getData.sort((a, b) => (sortDirection ? a.salaryVal - b.salaryVal : b.salaryVal - a.salaryVal));
-  } else if (column === 'sDate') {
+  } else if (column === "salary") {
+    getData.sort((a, b) =>
+      sortDirection ? a.salaryVal - b.salaryVal : b.salaryVal - a.salaryVal
+    );
+  } else if (column === "sDate") {
     getData.sort((a, b) => {
       const dateA = new Date(a.sDateVal);
       const dateB = new Date(b.sDateVal);
       return sortDirection ? dateA - dateB : dateB - dateA;
     });
-  } else if (column === 'email') {
+  } else if (column === "email") {
     getData.sort((a, b) => {
       const emailA = a.emailVal.toLowerCase();
       const emailB = b.emailVal.toLowerCase();
@@ -559,7 +575,7 @@ if (column === 'fullName') {
         ? emailA.localeCompare(emailB)
         : emailB.localeCompare(emailA);
     });
-  } else if (column === 'phone') {
+  } else if (column === "phone") {
     getData.sort((a, b) => {
       const phoneA = a.phoneVal.toLowerCase();
       const phoneB = b.phoneVal.toLowerCase();
